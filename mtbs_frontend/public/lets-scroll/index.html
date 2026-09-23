@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>MovieBooking — Fly Through Cinema</title>
+<style>
+:root, .sw-root { --sw-bg:#0a0a12; --sw-ink:#f0ebe5; --sw-ink-soft:#a0988a; --sw-accent:#e07a5f; --sw-font-display:system-ui,sans-serif; --sw-font-body:system-ui,sans-serif; }
+</style>
+</head>
+<body>
+<div id="world"></div>
+<script src="scrub-engine.js"></script>
+<script>
+mountLetsScroll(document.getElementById('world'), {
+  brand: { name: 'MovieBooking', href: '#' },
+  hint: 'scroll to fly through cinema',
+  diveScroll: 1.3, connScroll: 0.9,
+  sections: [
+    { id:'farm', label:'The Farms', still:'assets/still_farm.png', clip:'assets/vid/dive_farm.mp4', accent:'#8FB98A', eyebrow:'From leaf to last sip', title:'It starts in the hills.', body:'Every great film begins with a single frame.', tags:['Single-origin','Hand-picked'] },
+    { id:'kitchen', label:'Pearl Kitchen', still:'assets/still_kitchen.png', clip:'assets/vid/dive_kitchen.mp4', accent:'#D4A373', eyebrow:'Crafted by hand', title:'Where the magic brews.', body:'Precision, patience, and a little alchemy.', tags:['Hand-crafted','Small batch'] },
+    { id:'shop', label:'Flagship Shop', still:'assets/still_shop.png', clip:'assets/vid/dive_shop.mp4', accent:'#9B7EBD', eyebrow:'The stage is set', title:'Lights, camera, action.', body:'A theatre built for the unforgettable.', tags:['IMAX','4K'] },
+    { id:'delivery', label:'Delivery', still:'assets/still_delivery.png', clip:'assets/vid/dive_delivery.mp4', accent:'#6A8D92', eyebrow:'On its way', title:'From screen to seat.', body:'Your ticket, delivered in an instant.', tags:['Instant','Paperless'] },
+    { id:'plaza', label:'Community Plaza', still:'assets/still_plaza.png', clip:'assets/vid/dive_plaza.mp4', accent:'#C06C84', eyebrow:'Together', title:'The crowd roars.', body:'Shared moments, shared stories.', tags:['Live','Social'] },
+    { id:'hero', label:'The Hero', still:'assets/still_hero.png', clip:'assets/vid/dive_hero.mp4', accent:'#E07A5F', eyebrow:'The final scene', title:'Book your seat.', body:'Reserve in real-time. Lock your view. Experience the magic.', tags:['Real-time','QR Pass'], cta:{primary:{label:'Book Tickets',href:'#'},secondary:{label:'Explore Movies',href:'#'}} }
+  ],
+  connectors: ['assets/vid/conn1.mp4','assets/vid/conn2.mp4','assets/vid/conn3.mp4','assets/vid/conn4.mp4','assets/vid/conn5.mp4'],
+  connectorsMobile: ['assets/vid/conn1-m.mp4','assets/vid/conn2-m.mp4','assets/vid/conn3-m.mp4','assets/vid/conn4-m.mp4','assets/vid/conn5-m.mp4']
+});
+</script>
+</body>
+</html>

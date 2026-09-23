@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #070A11;
+    color: #F1F5F9;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+/* Custom Cinematic Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0F19;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 9999px;
+  border: 2px solid #0B0F19;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E11D48;
+}
+
+/* Custom Glass & Glow Utilities */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(17, 24, 39, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card-hover:hover {
+  background: rgba(30, 41, 59, 0.7);
+  border-color: rgba(225, 29, 72, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(225, 29, 72, 0.25);
+  transform: translateY(-3px);
+}
+
+.glow-red {
+  box-shadow: 0 0 25px -5px rgba(225, 29, 72, 0.5);
+}
+
+.glow-gold {
+  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.5);
+}
+
+/* Screen Curve Effect for Theater Seats */
+.theater-screen-curve {
+  height: 14px;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  box-shadow: 0 -8px 25px 4px rgba(225, 29, 72, 0.6);
+  background: linear-gradient(180deg, rgba(225, 29, 72, 0.8) 0%, rgba(245, 158, 11, 0.2) 100%);
+}
+
+/* Payment success/failure SVG animations (referenced by Payment.js) */
+.check-container,
+.cross-container {
+  width: 80px;
+  margin: 0 auto;
+}
+
+.animate-check circle,
+.animate-check path,
+.animate-cross path {
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.animate-check circle {
+  stroke: #22c55e;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.animate-check path {
+  stroke: #22c55e;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+
+.animate-cross path {
+  stroke: #ef4444;
+  stroke-dasharray: 56;
+  stroke-dashoffset: 56;
+  animation: stroke 0.4s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+@keyframes stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+

@@ -1,0 +1,351 @@
+# ============================================================
+
+# CINEMORA — Movie Ticket Booking System
+
+# Django + Django REST Framework + React + PostgreSQL
+
+# ============================================================
+
+# ------------------------------------------------------------
+
+# Environment & Secrets
+
+# ------------------------------------------------------------
+
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Local secret/config files
+
+*.secret
+*.secrets
+secrets/
+credentials/
+*.pem
+*.key
+
+# ------------------------------------------------------------
+
+# Python
+
+# ------------------------------------------------------------
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Python compiled files
+
+*.pyo
+*.pyd
+
+# Python packaging
+
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environments
+
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Python tooling
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.ruff_cache/
+
+# ------------------------------------------------------------
+
+# Django
+
+# ------------------------------------------------------------
+
+# Local development database
+
+*.sqlite3
+*.sqlite3-journal
+*.db
+*.db-journal
+
+# Django cache
+
+*.log
+logs/
+
+# Local Django generated files
+
+staticfiles/
+media/
+
+# Django local overrides
+
+local_settings.py
+
+# ------------------------------------------------------------
+
+# Node / React
+
+# ------------------------------------------------------------
+
+node_modules/
+
+# npm
+
+.npm/
+npm-debug.log*
+package-lock.json
+
+# Yarn
+
+.yarn/
+.yarnrc
+yarn-error.log
+
+# pnpm
+
+.pnpm-store/
+pnpm-debug.log*
+
+# Build output
+
+mtbs_frontend/build/
+mtbs_frontend/dist/
+
+# Generic frontend build output
+
+dist/
+build/
+
+# ------------------------------------------------------------
+
+# React / CRA
+
+# ------------------------------------------------------------
+
+.eslintcache
+
+# Testing / coverage
+
+coverage/
+.nyc_output/
+
+# React profiling
+
+*.cpuprofile
+
+# ------------------------------------------------------------
+
+# IDE / Editors
+
+# ------------------------------------------------------------
+
+.vscode/
+.idea/
+*.iml
+
+# VS Code local settings
+
+.history/
+
+# JetBrains
+
+*.iws
+*.ipr
+
+# ------------------------------------------------------------
+
+# Operating System
+
+# ------------------------------------------------------------
+
+# Windows
+
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# macOS
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+
+*~
+
+# ------------------------------------------------------------
+
+# Temporary / Backup Files
+
+# ------------------------------------------------------------
+
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+*.orig
+*.swp
+*.swo
+
+# Editor backup files
+
+*~
+
+# ------------------------------------------------------------
+
+# Test / Runtime Artifacts
+
+# ------------------------------------------------------------
+
+.pytest_cache/
+.cache/
+tmp/
+temp/
+
+# Runtime PID files
+
+*.pid
+
+# ------------------------------------------------------------
+
+# Django / ASGI / Server Runtime
+
+# ------------------------------------------------------------
+
+*.sock
+*.pid
+
+# Daphne / Gunicorn / Uvicorn runtime artifacts
+
+gunicorn.log
+daphne.log
+uvicorn.log
+
+# ------------------------------------------------------------
+
+# Database / Migration Backups
+
+# ------------------------------------------------------------
+
+# Database dumps / exports
+
+*.dump
+*.sql
+*.sql.gz
+*.sqlite
+*.sqlite3
+
+# Keep Django migration source files!
+
+# DO NOT add:
+
+# */migrations/
+
+# ------------------------------------------------------------
+
+# Frontend Generated Assets
+
+# ------------------------------------------------------------
+
+# React production build
+
+mtbs_frontend/build/
+
+# Keep source assets under:
+
+# mtbs_frontend/public/
+
+# mtbs_frontend/src/
+
+# ------------------------------------------------------------
+
+# Logs
+
+# ------------------------------------------------------------
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ------------------------------------------------------------
+
+# Environment-specific deployment files
+
+# ------------------------------------------------------------
+
+# Local deployment secrets
+
+.vercel/
+.netlify/
+.render/
+
+# Terraform state, if deployment infrastructure is added later
+
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# ------------------------------------------------------------
+
+# AI / Agent / Tool Artifacts
+
+# ------------------------------------------------------------
+
+# Local AI tool state
+
+.claude/
+.gemini/
+.cursor/
+.windsurf/
+
+# Temporary AI-generated files
+
+*.prompt.tmp
+*.agent.tmp
+
+# ------------------------------------------------------------
+
+# OS / Explorer artifacts
+
+# ------------------------------------------------------------
+
+*.lnk
+
+# ------------------------------------------------------------
+
+# Keep important project files
+
+# ------------------------------------------------------------
+
+# Django migrations MUST remain tracked.
+
+# package.json MUST remain tracked.
+
+# yarn.lock / package-lock.json should be tracked consistently.
+
+# React public assets MUST remain tracked.
+
+# Source code MUST remain tracked.
