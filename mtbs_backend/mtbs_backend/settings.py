@@ -103,6 +103,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 CORS_ALLOWED_ORIGINS = env_list(
@@ -154,6 +155,15 @@ CSRF_COOKIE_HTTPONLY = False
 # and the frontend can no longer read it — set DJANGO_CSRF_COOKIE_DOMAIN to
 # '.example.com' there so both subdomains share it.
 CSRF_COOKIE_DOMAIN = os.environ.get('DJANGO_CSRF_COOKIE_DOMAIN') or None
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 
 ROOT_URLCONF = 'mtbs_backend.urls'
