@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-const API_ROOT = 'http://localhost:8000/api/';
+// The API origin is configured per environment (CRA inlines REACT_APP_* at
+// build time). The localhost default keeps `npm start` working with no .env;
+// production sets REACT_APP_API_ROOT to the deployed backend. A trailing slash
+// is normalised in so WS_ROOT and every relative path below stay correct
+// whether or not the env value ends in one.
+const API_ROOT = (process.env.APP_API_ROOT || 'http://localhost:8000/api/')
+  .replace(/\/?$/, '/');
 
 // Same server, other protocol: http://host/api/ -> ws://host/ws/. Exported so
 // the seat socket can't drift onto a different host than the REST calls.
