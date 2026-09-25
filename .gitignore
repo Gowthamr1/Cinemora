@@ -349,3 +349,4 @@ yarn-error.log*
 # React public assets MUST remain tracked.
 
 # Source code MUST remain tracked.
+.env.example

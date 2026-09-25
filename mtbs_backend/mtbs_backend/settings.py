@@ -28,12 +28,27 @@ load_dotenv(BASE_DIR / '.env')
 TESTING = 'test' in sys.argv
 
 
-def env_flag(name, default=False):
-    return os.environ.get(name, str(default)).strip().lower() in ('1', 'true', 'yes', 'on')
+def _first_env(*names):
+    # First environment variable that is actually set, else None. Lets a plain
+    # name (SECRET_KEY, ALLOWED_HOSTS, ... — the convention the other Render
+    # services use) take effect while the older DJANGO_-prefixed alias still
+    # works, so renaming a var on the host never has to be an all-at-once switch.
+    for name in names:
+        val = os.environ.get(name)
+        if val is not None:
+            return val
+    return None
 
 
-def env_list(name, default=()):
-    raw = os.environ.get(name)
+def env_flag(*names, default=False):
+    val = _first_env(*names)
+    if val is None:
+        val = str(default)
+    return val.strip().lower() in ('1', 'true', 'yes', 'on')
+
+
+def env_list(*names, default=()):
+    raw = _first_env(*names)
     if not raw:
         return list(default)
     return [item.strip() for item in raw.split(',') if item.strip()]
@@ -45,10 +60,10 @@ def env_list(name, default=()):
 # The key signs sessions and JWTs, so a published one lets anyone mint a token
 # for any account. It comes from the environment in production; the fallback
 # exists so a fresh clone runs without setup and is only reachable with DEBUG on.
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = _first_env('SECRET_KEY', 'DJANGO_SECRET_KEY')
 
 # Debug tracebacks print settings and SQL to anyone who triggers an error.
-DEBUG = env_flag('DJANGO_DEBUG', default=not SECRET_KEY)
+DEBUG = env_flag('DEBUG', 'DJANGO_DEBUG', default=not SECRET_KEY)
 
 if not SECRET_KEY:
     if not DEBUG:
@@ -61,7 +76,7 @@ if not SECRET_KEY:
 # Empty ALLOWED_HOSTS with DEBUG off rejects every request, so give production a
 # clear knob and development the loopback names it actually uses.
 ALLOWED_HOSTS = env_list(
-    'DJANGO_ALLOWED_HOSTS',
+    'ALLOWED_HOSTS', 'DJANGO_ALLOWED_HOSTS',
     default=['localhost', '127.0.0.1', '[::1]'] if DEBUG else [],
 )
 
@@ -107,7 +122,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = env_list(
-    'DJANGO_CORS_ORIGINS',
+    'CORS_ALLOWED_ORIGINS', 'DJANGO_CORS_ORIGINS',
     default=['http://localhost:3000'],  # React default port
 )
 
@@ -121,7 +136,7 @@ CORS_ALLOW_CREDENTIALS = True
 # React dev server is a different origin from the API, so it needs naming even
 # though the two are the same *site*.
 CSRF_TRUSTED_ORIGINS = env_list(
-    'DJANGO_CSRF_TRUSTED_ORIGINS',
+    'CSRF_TRUSTED_ORIGINS', 'DJANGO_CSRF_TRUSTED_ORIGINS',
     default=CORS_ALLOWED_ORIGINS,
 )
 
@@ -141,7 +156,7 @@ AUTH_COOKIE_REFRESH_PATH = '/api/token/refresh/'
 # as the same site in development. A production split across *different*
 # domains would need 'None' (plus HTTPS), which browsers increasingly block as
 # a third-party cookie; serving both under one domain avoids that entirely.
-AUTH_COOKIE_SAMESITE = os.environ.get('DJANGO_AUTH_COOKIE_SAMESITE', 'Lax')
+AUTH_COOKIE_SAMESITE = _first_env('AUTH_COOKIE_SAMESITE', 'DJANGO_AUTH_COOKIE_SAMESITE') or 'Lax'
 
 # Must stay readable by JavaScript: axios copies this cookie into the
 # X-CSRFToken header on every write. Setting CSRF_COOKIE_HTTPONLY = True looks
@@ -154,7 +169,7 @@ CSRF_COOKIE_HTTPONLY = False
 # (app.example.com / api.example.com), this cookie becomes host-only to the API
 # and the frontend can no longer read it — set DJANGO_CSRF_COOKIE_DOMAIN to
 # '.example.com' there so both subdomains share it.
-CSRF_COOKIE_DOMAIN = os.environ.get('DJANGO_CSRF_COOKIE_DOMAIN') or None
+CSRF_COOKIE_DOMAIN = _first_env('CSRF_COOKIE_DOMAIN', 'DJANGO_CSRF_COOKIE_DOMAIN') or None
 
 STORAGES = {
     "default": {
@@ -212,16 +227,20 @@ else:
 
 
 
-NEON_DB_STRING = os.getenv("NEON_DB_STRING")
+# Accepts DATABASE_URL (the conventional name the other services use) and
+# falls back to the original NEON_DB_STRING, so an already-deployed backend
+# keeps connecting without editing its dashboard.
+DATABASE_URL = _first_env('DATABASE_URL', 'NEON_DB_STRING')
 
-if not NEON_DB_STRING:
+if not DATABASE_URL:
     raise RuntimeError(
-        "NEON_DB_STRING is not configured. Django will not start without the Neon database."
+        "DATABASE_URL (or NEON_DB_STRING) is not configured. Django will not "
+        "start without the Neon database."
     )
 
 DATABASES = {
     "default": dj_database_url.parse(
-        NEON_DB_STRING,
+        DATABASE_URL,
         conn_max_age=600,
         conn_health_checks=True,
     )
@@ -343,18 +362,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Off in development because HTTPS redirects and secure-only cookies break
 # http://localhost. `manage.py check --deploy` covers the rest.
 if not DEBUG:
-    SECURE_SSL_REDIRECT = env_flag('DJANGO_SECURE_SSL_REDIRECT', default=True)
+    SECURE_SSL_REDIRECT = env_flag('SECURE_SSL_REDIRECT', 'DJANGO_SECURE_SSL_REDIRECT', default=True)
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     # Tell browsers to keep using HTTPS. Starts at an hour so a misconfigured
     # deploy is recoverable; raise it once the certificate is settled.
-    SECURE_HSTS_SECONDS = int(os.environ.get('DJANGO_HSTS_SECONDS', 3600))
+    SECURE_HSTS_SECONDS = int(_first_env('HSTS_SECONDS', 'DJANGO_HSTS_SECONDS') or 3600)
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
     # Behind a reverse proxy Django only sees plain HTTP, so it needs the
     # header the proxy sets to know the original request was secure.
-    if env_flag('DJANGO_BEHIND_PROXY'):
+    if env_flag('BEHIND_PROXY', 'DJANGO_BEHIND_PROXY'):
         SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     # The browsable API is a debugging aid; in production it invites poking.
