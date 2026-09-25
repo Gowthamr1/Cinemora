@@ -11,6 +11,7 @@
     "axios": "^1.9.0",
     "framer-motion": "^12.12.1",
     "html5-qrcode": "^2.3.8",
+    "lint": "^1.2.2",
     "lucide-react": "^0.511.0",
     "qrcode.react": "^4.2.0",
     "react": "^19.1.0",

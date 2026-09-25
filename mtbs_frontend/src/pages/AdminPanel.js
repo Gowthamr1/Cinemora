@@ -7,7 +7,6 @@ import ShowtimesSection from '../components/admin/ShowtimesSection';
 import { BookingsSection, PaymentsSection } from '../components/admin/RecordsSections';
 import { asList as arr } from '../utils/list';
 import { FiFilm, FiGrid, FiClock, FiCheckSquare, FiCreditCard, FiPieChart, FiShield, FiAlertCircle, FiChevronRight } from 'react-icons/fi';
-import { motion } from 'framer-motion';
 
 const AdminPanel = () => {
   const navigate = useNavigate();

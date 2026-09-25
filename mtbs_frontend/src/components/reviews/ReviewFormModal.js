@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from '../../api/axios';
 import StarRating from './StarRating';
-import { FiX, FiCheck, FiAlertCircle } from 'react-icons/fi';
+import { FiX, FiAlertCircle } from 'react-icons/fi';
 
 const ReviewFormModal = ({ movie, bookings, onClose, onSubmitted, editingReview }) => {
   const [booking, setBooking] = useState(editingReview?.booking || bookings[0]?.id || '');

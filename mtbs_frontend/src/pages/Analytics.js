@@ -4,8 +4,7 @@ import {
   BarList, ChartCard, Heatmap, HeroFigure, StatTile, STATUS_COLORS,
   TimeSeriesChart, VIZ, compact, hourLabel, money, moneyCompact, shortDate,
 } from '../components/Charts';
-import { FiPieChart, FiTrendingUp, FiDollarSign, FiUsers, FiCalendar, FiActivity, FiShield, FiAlertCircle } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+import { FiPieChart, FiAlertCircle } from 'react-icons/fi';
 
 const RANGES = [
   { label: '7 Days', value: 7 },

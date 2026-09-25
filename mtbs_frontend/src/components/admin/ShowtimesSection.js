@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import axios from '../../api/axios';
 import { Modal, Field, input, Btn, EmptyState, SectionHeader } from './ui';
-import { FiClock, FiPlus, FiEdit2, FiTrash2, FiDollarSign, FiGrid, FiFilm, FiMapPin } from 'react-icons/fi';
+import { FiClock, FiPlus, FiEdit2, FiTrash2, FiDollarSign, FiGrid, FiMapPin } from 'react-icons/fi';
 
 const EMPTY = {
   movie: '', theatre: '', screen_number: 1, start_time: '',

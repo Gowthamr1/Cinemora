@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from '../api/axios';
-import { FiGift, FiLock, FiCheckCircle, FiAlertCircle, FiShield } from 'react-icons/fi';
+import { FiGift, FiCheckCircle, FiAlertCircle, FiShield } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 const money = (n) => `$${(Number(n) || 0).toFixed(2)}`;

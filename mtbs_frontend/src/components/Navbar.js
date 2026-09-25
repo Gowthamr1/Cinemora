@@ -16,8 +16,7 @@ import {
   FiX, 
   FiChevronDown,
   FiGrid,
-  FiSliders,
-  FiActivity
+  FiSliders
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 

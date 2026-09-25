@@ -2,8 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { useShowtimeSeats } from '../hooks/useShowtimeSeats';
-import { FiTv, FiClock, FiMapPin, FiCheck, FiAlertCircle, FiArrowRight, FiShield } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+import { FiClock, FiMapPin, FiAlertCircle, FiArrowRight } from 'react-icons/fi';
 
 const Booking = () => {
   const { id } = useParams();

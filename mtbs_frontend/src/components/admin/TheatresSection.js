@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from '../../api/axios';
 import { Modal, Field, input, Btn, EmptyState, SectionHeader } from './ui';
-import { FiMapPin, FiFilm, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiMapPin, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 const EMPTY = { name: '', city: '', address: '', total_screens: 1 };
 

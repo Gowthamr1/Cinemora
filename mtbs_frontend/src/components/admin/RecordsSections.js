@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { EmptyState, SectionHeader } from './ui';
-import { FiSearch, FiFilter } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
 
 const STATUS_STYLES = {
   CONFIRMED: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',

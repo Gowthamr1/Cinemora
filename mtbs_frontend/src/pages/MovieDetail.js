@@ -6,8 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import StarRating from '../components/reviews/StarRating';
 import ReviewsTab from '../components/reviews/ReviewsTab';
 import WatchlistButton from '../components/WatchlistButton';
-import { FiClock, FiCalendar, FiFilm, FiVideo, FiUsers, FiMessageSquare, FiMapPin, FiChevronRight, FiAlertCircle } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+import { FiClock, FiCalendar, FiFilm, FiVideo, FiUsers, FiMapPin, FiChevronRight, FiAlertCircle } from 'react-icons/fi';
 
 const toEmbedUrl = (url) => {
   if (!url) return null;

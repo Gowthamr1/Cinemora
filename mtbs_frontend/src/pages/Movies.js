@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { asList } from '../utils/list';
 import MovieRating from '../components/reviews/MovieRating';
 import WatchlistButton from '../components/WatchlistButton';
-import { FiSearch, FiFilter, FiX, FiFilm, FiClock, FiGlobe, FiChevronRight, FiCalendar } from 'react-icons/fi';
+import { FiSearch, FiFilter, FiX, FiFilm, FiClock, FiChevronRight } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const EMPTY_FILTERS = {

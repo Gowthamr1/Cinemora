@@ -5,9 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { StatTile, VIZ } from '../components/Charts';
 import { asList } from '../utils/list';
 import ReviewFormModal from '../components/reviews/ReviewFormModal';
-import StarRating from '../components/reviews/StarRating';
-import { FiCalendar, FiClock, FiMapPin, FiCheckCircle, FiXCircle, FiGrid, FiStar, FiAlertCircle, FiChevronRight } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+import { FiCalendar, FiGrid, FiAlertCircle, FiChevronRight } from 'react-icons/fi';
 
 const STATUS_STYLES = {
   CONFIRMED: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
