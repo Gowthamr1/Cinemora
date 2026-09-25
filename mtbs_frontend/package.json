@@ -2,6 +2,7 @@
   "name": "mtbs_frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8000",
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@testing-library/dom": "^10.4.0",

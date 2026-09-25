@@ -1,16 +1,49 @@
 import axios from 'axios';
 
-// The API origin is configured per environment (CRA inlines REACT_APP_* at
-// build time). The localhost default keeps `npm start` working with no .env;
-// production sets REACT_APP_API_ROOT to the deployed backend. A trailing slash
-// is normalised in so WS_ROOT and every relative path below stay correct
-// whether or not the env value ends in one.
-const API_ROOT = (process.env.APP_API_ROOT || 'http://localhost:8000/api/')
-  .replace(/\/?$/, '/');
+// The REST API is reached through a SAME-ORIGIN `/api/` path by default, never
+// a hardcoded backend host. In production a Vercel rewrite (see vercel.json)
+// proxies /api/* to the Render backend server-side, so the browser only ever
+// makes first-party requests to its own origin — which is what keeps the
+// httpOnly auth cookies first-party and lets SameSite=Lax keep working. In
+// local dev the CRA dev-server proxy (the "proxy" field in package.json)
+// forwards /api/* to the Django dev server on :8000.
+//
+// REACT_APP_API_ROOT is an optional escape hatch (CRA only inlines REACT_APP_*
+// vars, and does so at BUILD time): set it to an absolute origin to bypass the
+// proxy and call a backend directly. A trailing slash is normalised in so every
+// relative path below stays correct whether or not the value ends in one.
+const API_ROOT = (process.env.REACT_APP_API_ROOT || '/api/').replace(/\/?$/, '/');
 
-// Same server, other protocol: http://host/api/ -> ws://host/ws/. Exported so
-// the seat socket can't drift onto a different host than the REST calls.
-export const WS_ROOT = API_ROOT.replace(/^http/, 'ws').replace(/\/api\/$/, '/ws/');
+// WebSockets cannot travel through the Vercel HTTP rewrite, so the seat socket
+// always needs an absolute backend origin of its own. Preference order:
+//   1. REACT_APP_WS_ROOT — optional override; set it to point the socket at a
+//      different backend without touching code. Not required in production.
+//   2. Derive from an absolute REACT_APP_API_ROOT (http->ws, /api/ -> /ws/),
+//      for anyone who bypasses the proxy via that escape hatch.
+//   3. No override set: local dev (localhost/127.0.0.1) talks to the Django dev
+//      server on :8000; any deployed build talks to the Render backend, whose
+//      host is hardcoded below so production needs no environment variable. The
+//      frontend's own origin has no socket server and Vercel can't proxy WS, so
+//      the Render host is the only correct target anyway.
+const PROD_WS_ROOT = 'wss://cinemora-6r4q.onrender.com/ws/';
+
+const deriveWsRoot = () => {
+  if (process.env.REACT_APP_WS_ROOT) {
+    return process.env.REACT_APP_WS_ROOT.replace(/\/?$/, '/');
+  }
+  if (/^https?:/i.test(API_ROOT)) {
+    return API_ROOT.replace(/^http/, 'ws').replace(/\/api\/$/, '/ws/');
+  }
+  const host = typeof window !== 'undefined' ? window.location.hostname : '';
+  if (host === 'localhost' || host === '127.0.0.1') {
+    return 'ws://localhost:8000/ws/';
+  }
+  return PROD_WS_ROOT;
+};
+
+// Exported so the seat socket can't drift onto a different host than the REST
+// calls without it being a deliberate, visible configuration choice.
+export const WS_ROOT = deriveWsRoot();
 
 const api = axios.create({
   baseURL: API_ROOT,
