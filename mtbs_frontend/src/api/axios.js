@@ -12,7 +12,20 @@ import axios from 'axios';
 // vars, and does so at BUILD time): set it to an absolute origin to bypass the
 // proxy and call a backend directly. A trailing slash is normalised in so every
 // relative path below stays correct whether or not the value ends in one.
-const API_ROOT = (process.env.REACT_APP_API_ROOT || '/api/').replace(/\/?$/, '/');
+const PROD_API_ROOT = 'https://cinemora-6r4q.onrender.com/api/';
+
+const deriveApiRoot = () => {
+  if (process.env.REACT_APP_API_ROOT) {
+    return process.env.REACT_APP_API_ROOT.replace(/\/?$/, '/');
+  }
+  const host = typeof window !== 'undefined' ? window.location.hostname : '';
+  if (host === 'localhost' || host === '127.0.0.1') {
+    return '/api/';
+  }
+  return PROD_API_ROOT;
+};
+
+const API_ROOT = deriveApiRoot();
 
 // WebSockets cannot travel through the Vercel HTTP rewrite, so the seat socket
 // always needs an absolute backend origin of its own. Preference order:

@@ -372,6 +372,10 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
 # --- Production hardening -------------------------------------------------
 # Off in development because HTTPS redirects and secure-only cookies break
 # http://localhost. `manage.py check --deploy` covers the rest.

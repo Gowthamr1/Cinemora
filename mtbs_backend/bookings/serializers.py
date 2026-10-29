@@ -18,7 +18,7 @@ class BookingSerializer(serializers.ModelSerializer):
     amount_paid = serializers.SerializerMethodField()
     user = serializers.StringRelatedField()
     # Client sends the chosen seat numbers; num_seats is derived from them.
-    seats = serializers.ListField(child=serializers.IntegerField(min_value=1))
+    seats = serializers.ListField(child=serializers.IntegerField(min_value=1), max_length=20)
     seat_labels = serializers.SerializerMethodField()
     # Time-aware: a PENDING booking past its window reads as EXPIRED, and a
     # CONFIRMED one whose show has played reads as COMPLETED.

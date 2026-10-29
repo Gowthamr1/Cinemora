@@ -94,8 +94,9 @@ class ReviewViewSet(viewsets.ModelViewSet):
         serializer.save()
 
     def perform_destroy(self, instance):
-        """You can only delete your own review."""
-        if instance.user != self.request.user:
+        """You can only delete your own review; admins may moderate any review."""
+        user = self.request.user
+        if instance.user != user and not getattr(user, 'is_admin', False):
             raise ValidationError({'detail': 'You can only delete your own reviews.'})
         instance.delete()
 

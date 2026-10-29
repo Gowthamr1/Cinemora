@@ -44,6 +44,12 @@ class AllowedHostsOrigin:
         hosts = list(settings.ALLOWED_HOSTS)
         if settings.DEBUG and not hosts:
             hosts = ['localhost', '127.0.0.1', '[::1]']
+        for origin in getattr(settings, 'CORS_ALLOWED_ORIGINS', []):
+            if origin not in hosts:
+                hosts.append(origin)
+        for pattern in ('*.vercel.app', 'https://*.vercel.app', 'http://localhost:*'):
+            if pattern not in hosts:
+                hosts.append(pattern)
         # A fresh validator per connection: sharing one would mean mutating
         # allowed_origins under concurrent handshakes.
         return await OriginValidator(self.application, hosts)(scope, receive, send)

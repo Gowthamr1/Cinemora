@@ -35,6 +35,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('username', 'email', 'password', 'password2', 'role')
 
+    def validate_username(self, value):
+        if CustomUser.objects.filter(username__iexact=value).exists():
+            raise serializers.ValidationError('A user with that username already exists.')
+        return value
+
     def validate_email(self, value):
         # Case-insensitive: two accounts differing only in case invite
         # confusion over which one a password reset would reach.
