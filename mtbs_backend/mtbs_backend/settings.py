@@ -123,13 +123,18 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = env_list(
     'CORS_ALLOWED_ORIGINS', 'DJANGO_CORS_ORIGINS',
-    default=['http://localhost:3000'],  # React default port
+    default=['http://localhost:3000', 'https://cinemora.vercel.app'],  # React default port
 )
 
 # The auth tokens travel as cookies now, and a browser discards Set-Cookie on a
 # cross-origin response unless the server opts in here (and the client sends
 # `withCredentials`). Note this also forbids a wildcard Allow-Origin, which is
 # why CORS_ALLOWED_ORIGINS above must stay an explicit list.
+# Allow all Vercel deployments (production, branch previews, PR previews)
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+]
+
 CORS_ALLOW_CREDENTIALS = True
 
 # Django rejects any unsafe request whose Origin header isn't listed here. The
@@ -137,13 +142,16 @@ CORS_ALLOW_CREDENTIALS = True
 # though the two are the same *site*.
 CSRF_TRUSTED_ORIGINS = env_list(
     'CSRF_TRUSTED_ORIGINS', 'DJANGO_CSRF_TRUSTED_ORIGINS',
-    default=CORS_ALLOWED_ORIGINS,
+    default=CORS_ALLOWED_ORIGINS + ['https://*.vercel.app'],
 )
 
 # --- Auth cookies ---------------------------------------------------------
 # Both JWTs live in httpOnly cookies so that no script on the page can read
 # them. See accounts/cookies.py for the flags and accounts/authentication.py
 # for the CSRF check that this arrangement makes mandatory.
+if 'https://*.vercel.app' not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append('https://*.vercel.app')
+
 AUTH_COOKIE_ACCESS = 'mtbs_access'
 AUTH_COOKIE_REFRESH = 'mtbs_refresh'
 AUTH_COOKIE_ACCESS_PATH = '/api/'
@@ -162,6 +170,12 @@ AUTH_COOKIE_SAMESITE = _first_env('AUTH_COOKIE_SAMESITE', 'DJANGO_AUTH_COOKIE_SA
 # X-CSRFToken header on every write. Setting CSRF_COOKIE_HTTPONLY = True looks
 # like hardening and instead breaks every POST in the app with a bare 403.
 CSRF_COOKIE_HTTPONLY = False
+
+# Cross-origin / cross-domain setups require SameSite=None and Secure=True so
+# the browser sends and accepts the CSRF cookie across different origins / subdomains.
+# Browsers mandate that SameSite=None must be accompanied by Secure=True.
+CSRF_COOKIE_SAMESITE = _first_env('CSRF_COOKIE_SAMESITE', 'DJANGO_CSRF_COOKIE_SAMESITE') or 'None'
+CSRF_COOKIE_SECURE = env_flag('CSRF_COOKIE_SECURE', 'DJANGO_CSRF_COOKIE_SECURE', default=True)
 
 # Nothing needed in development: cookies ignore ports, so the csrftoken this
 # server sets on `localhost` is already readable by the React app on

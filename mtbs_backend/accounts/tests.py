@@ -395,6 +395,18 @@ class CsrfEnforcementTests(TestCase):
         self.assertEqual(self.client.get(reverse('profile')).status_code, 200)
         self.assertEqual(self.client.get(reverse('movie-list')).status_code, 200)
 
+    def test_csrf_cookie_flags(self):
+        """CSRF cookie must be SameSite=None and Secure=True for cross-origin access."""
+        fresh = APIClient(enforce_csrf_checks=True)
+        response = fresh.post(reverse('token_obtain_pair'),
+                              {'username': 'boss', 'password': PASSWORD})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('csrftoken', response.cookies)
+        csrf_cookie = response.cookies['csrftoken']
+        self.assertEqual(csrf_cookie['samesite'].lower(), 'none')
+        self.assertTrue(csrf_cookie['secure'])
+        self.assertFalse(csrf_cookie['httponly'])
+
     def test_login_itself_needs_no_csrf_token(self):
         """It has to work for someone who has never held a cookie — including
         the very visitor who is about to be issued one."""
