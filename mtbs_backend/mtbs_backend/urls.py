@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
-from accounts.views import CookieTokenRefreshView, MyTokenObtainPairView
+from accounts.views import CookieTokenRefreshView, MyTokenObtainPairView, CSRFView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/csrf/', CSRFView.as_view(), name='csrf_token'),
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
 
     # The refresh token lives in an httpOnly cookie scoped to exactly this
@@ -23,4 +24,3 @@ urlpatterns = [
     path('api/movies/<slug:slug>/reviews/', include('reviews.urls')),
 
 ]
-

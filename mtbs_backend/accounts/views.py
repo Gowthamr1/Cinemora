@@ -1,3 +1,4 @@
+from django.middleware.csrf import get_token
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import generics, status
@@ -12,7 +13,19 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+# ✅ CSRF Token View (explicit endpoint for cross-origin or SPA clients)
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class CSRFView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        token = get_token(request)
+        response = Response({'csrfToken': token})
+        response['X-CSRFToken'] = token
+        return response
+
 # ✅ Register
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
@@ -32,8 +45,12 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        serializer = UserSerializer(request.user)
-        return Response(serializer.data)
+        token = get_token(request)
+        data = UserSerializer(request.user).data
+        data['csrf_token'] = token
+        response = Response(data)
+        response['X-CSRFToken'] = token
+        return response
 
 # ✅ Custom JWT Login View
 @method_decorator(ensure_csrf_cookie, name='dispatch')
@@ -54,7 +71,11 @@ class MyTokenObtainPairView(TokenObtainPairView):
         #
         # The user goes back in the body instead, because the frontend used to
         # read `username`/`role` by decoding the JWT and can no longer do that.
-        response = Response(UserSerializer(serializer.user).data)
+        token = get_token(request)
+        data = UserSerializer(serializer.user).data
+        data['csrf_token'] = token
+        response = Response(data)
+        response['X-CSRFToken'] = token
         return set_auth_cookies(response,
                                 serializer.validated_data['access'],
                                 serializer.validated_data['refresh'])

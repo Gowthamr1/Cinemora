@@ -136,6 +136,10 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_EXPOSE_HEADERS = [
+    'x-csrftoken',
+    'content-type',
+]
 
 # Django rejects any unsafe request whose Origin header isn't listed here. The
 # React dev server is a different origin from the API, so it needs naming even
