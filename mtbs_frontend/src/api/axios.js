@@ -4,15 +4,15 @@ import axios from 'axios';
 // a hardcoded backend host. In production a Vercel rewrite (see vercel.json)
 // proxies /api/* to the Render backend server-side, so the browser only ever
 // makes first-party requests to its own origin — which is what keeps the
-// auth cookies first-party and lets SameSite=None / Lax work smoothly. In
-// local dev the CRA dev-server proxy (the "proxy" field in package.json)
-// forwards /api/* to the Django dev server on :8000.
-//
-// REACT_APP_API_ROOT is an optional escape hatch (CRA inlines REACT_APP_*
-// vars at BUILD time): set it to an absolute origin to bypass the
-// proxy and call a backend directly. A trailing slash is normalised in so every
-// relative path below stays correct whether or not the value ends in one.
+// auth cookies first-party and prevents privacy-centric browsers (Helium, Brave,
+// Safari) from blocking Set-Cookie headers as "third-party cookies".
 const deriveApiRoot = () => {
+  const host = typeof window !== 'undefined' ? window.location.hostname : '';
+  // When running on Vercel (*.vercel.app) or local development, always route through
+  // the first-party /api/ proxy. This completely eliminates third-party cookie blocking.
+  if (host.endsWith('vercel.app') || host === 'localhost' || host === '127.0.0.1') {
+    return '/api/';
+  }
   if (process.env.REACT_APP_API_ROOT) {
     return process.env.REACT_APP_API_ROOT.replace(/\/?$/, '/');
   }
@@ -26,13 +26,7 @@ const isCrossDomainTarget = typeof window !== 'undefined' &&
   !API_ROOT.startsWith(window.location.origin);
 
 // WebSockets cannot travel through the Vercel HTTP rewrite, so the seat socket
-// always needs an absolute backend origin of its own. Preference order:
-//   1. REACT_APP_WS_ROOT — optional override; set it to point the socket at a
-//      different backend without touching code. Not required in production.
-//   2. Derive from an absolute REACT_APP_API_ROOT (http->ws, /api/ -> /ws/),
-//      for anyone who bypasses the proxy via that escape hatch.
-//   3. No override set: local dev (localhost/127.0.0.1) talks to the Django dev
-//      server on :8000; any deployed build talks to the Render backend.
+// always needs an absolute backend origin of its own.
 const PROD_WS_ROOT = 'wss://cinemora-6r4q.onrender.com/ws/';
 
 const deriveWsRoot = () => {
@@ -50,6 +44,44 @@ const deriveWsRoot = () => {
 };
 
 export const WS_ROOT = deriveWsRoot();
+
+// Token storage fallback for environments where third-party cookies are blocked
+const TOKEN_KEY = 'cinemora_access_token';
+const REFRESH_KEY = 'cinemora_refresh_token';
+
+export const getStoredAccessToken = () => {
+  try {
+    return localStorage.getItem(TOKEN_KEY);
+  } catch {
+    return null;
+  }
+};
+
+export const getStoredRefreshToken = () => {
+  try {
+    return localStorage.getItem(REFRESH_KEY);
+  } catch {
+    return null;
+  }
+};
+
+export const storeAuthTokens = (access, refresh) => {
+  try {
+    if (access) localStorage.setItem(TOKEN_KEY, access);
+    if (refresh) localStorage.setItem(REFRESH_KEY, refresh);
+  } catch {
+    // Ignore storage quota/permission errors
+  }
+};
+
+export const clearAuthTokens = () => {
+  try {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(REFRESH_KEY);
+  } catch {
+    // Ignore storage quota/permission errors
+  }
+};
 
 // Clean up any stale csrftoken cookie left on the frontend origin from older sessions
 // when calling a cross-domain backend directly.
@@ -100,8 +132,13 @@ const api = axios.create({
   withXSRFToken: !isCrossDomainTarget,
 });
 
-// Request interceptor: attach CSRF token if managed in-memory (cross-domain)
+// Request interceptor: attach Authorization header (token fallback) and CSRF token
 api.interceptors.request.use((config) => {
+  const token = getStoredAccessToken();
+  if (token) {
+    config.headers = config.headers || {};
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
   if (currentCsrfToken) {
     config.headers = config.headers || {};
     config.headers['X-CSRFToken'] = currentCsrfToken;
@@ -117,10 +154,18 @@ let refreshing = null;
 
 const refreshSession = () => {
   if (!refreshing) {
+    const refreshToken = getStoredRefreshToken();
+    const payload = refreshToken ? { refresh: refreshToken } : null;
     refreshing = axios
-      .post(`${API_ROOT}token/refresh/`, null, {
+      .post(`${API_ROOT}token/refresh/`, payload, {
         withCredentials: true,
         headers: currentCsrfToken ? { 'X-CSRFToken': currentCsrfToken } : {},
+      })
+      .then((res) => {
+        if (res.data?.access) {
+          storeAuthTokens(res.data.access);
+        }
+        return res;
       })
       .finally(() => { refreshing = null; });
   }
@@ -129,6 +174,9 @@ const refreshSession = () => {
 
 api.interceptors.response.use(
   (response) => {
+    if (response.data?.access) {
+      storeAuthTokens(response.data.access, response.data.refresh);
+    }
     const token = response.headers?.['x-csrftoken'] || response.data?.csrf_token || response.data?.csrfToken;
     if (token) {
       setCsrfToken(token);
@@ -149,12 +197,17 @@ api.interceptors.response.use(
       if (token) {
         setCsrfToken(token);
       }
+      if (refreshRes?.data?.access) {
+        config.headers = config.headers || {};
+        config.headers['Authorization'] = `Bearer ${refreshRes.data.access}`;
+      }
       if (currentCsrfToken) {
         config.headers = config.headers || {};
         config.headers['X-CSRFToken'] = currentCsrfToken;
       }
       return await api(config);
     } catch (refreshError) {
+      clearAuthTokens();
       if (onUnauthorized) onUnauthorized();
       return Promise.reject(refreshError);
     }

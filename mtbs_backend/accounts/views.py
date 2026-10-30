@@ -30,16 +30,10 @@ class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
-    # Open to the public and it creates rows — the tight `auth` budget keeps a
-    # script from filling the user table.
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = 'auth'
 
 # ✅ Profile View
-# Also the client's session-restore call: the access token is httpOnly now, so
-# JavaScript can't decode a username out of it and has to ask instead. Setting
-# the CSRF cookie here means a returning user who still holds a valid auth
-# cookie regains a usable CSRF token without having to log in again.
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
@@ -56,8 +50,6 @@ class ProfileView(APIView):
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-    # Unauthenticated and it validates passwords, which makes it the one
-    # endpoint worth brute-forcing.
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = 'auth'
 
@@ -65,15 +57,15 @@ class MyTokenObtainPairView(TokenObtainPairView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)  # 401 on bad credentials
 
-        # The tokens deliberately never appear in the response body. Handing
-        # them to JavaScript is precisely what this design removes; they leave
-        # as httpOnly cookies and the client never sees their contents.
-        #
-        # The user goes back in the body instead, because the frontend used to
-        # read `username`/`role` by decoding the JWT and can no longer do that.
         token = get_token(request)
-        data = UserSerializer(serializer.user).data
-        data['csrf_token'] = token
+        # Returns user data AND access/refresh tokens in body as a fallback
+        # for privacy browsers (e.g. Helium, Brave, Safari) that block third-party cookies.
+        data = {
+            **UserSerializer(serializer.user).data,
+            'access': str(serializer.validated_data['access']),
+            'refresh': str(serializer.validated_data['refresh']),
+            'csrf_token': token,
+        }
         response = Response(data)
         response['X-CSRFToken'] = token
         return set_auth_cookies(response,
@@ -81,49 +73,33 @@ class MyTokenObtainPairView(TokenObtainPairView):
                                 serializer.validated_data['refresh'])
 
 
-# ✅ Refresh, reading the httpOnly cookie
+# ✅ Refresh, supporting both httpOnly cookie and request body
 class CookieTokenRefreshView(TokenRefreshView):
-    """Mint a new access token from the refresh cookie.
-
-    The stock view expects the refresh token in the request body, which is
-    impossible now that it is httpOnly — the client cannot read the cookie to
-    put it there. It comes off the cookie here instead, and the fresh access
-    token goes straight back out the same way.
-    """
+    """Mint a new access token from the refresh cookie or request body."""
 
     def post(self, request, *args, **kwargs):
-        refresh = request.COOKIES.get(settings.AUTH_COOKIE_REFRESH)
+        refresh = request.COOKIES.get(settings.AUTH_COOKIE_REFRESH) or request.data.get('refresh')
         if not refresh:
-            return Response({'detail': 'No refresh cookie.'},
+            return Response({'detail': 'No refresh token provided.'},
                             status=status.HTTP_401_UNAUTHORIZED)
 
         serializer = self.get_serializer(data={'refresh': refresh})
         try:
             serializer.is_valid(raise_exception=True)
         except (TokenError, InvalidToken):
-            # Expired or tampered with. Clear the cookies so the client stops
-            # retrying a credential that will never work again — otherwise the
-            # frontend's refresh-on-401 loop has nothing to break it.
             return clear_auth_cookies(
                 Response({'detail': 'Refresh token is not valid.'},
                          status=status.HTTP_401_UNAUTHORIZED))
 
-        # 204: there is nothing to tell the client. The new token is in the
-        # Set-Cookie header and is not theirs to read.
-        response = Response(status=status.HTTP_204_NO_CONTENT)
+        access_token = str(serializer.validated_data['access'])
+        response = Response({'access': access_token}, status=status.HTTP_200_OK)
         return set_access_cookie(response, serializer.validated_data['access'])
 
 
 # ✅ Logout — clears the cookies the client cannot clear itself
 class LogoutView(APIView):
-    # Deliberately unauthenticated. Logout has to work in exactly the state
-    # where authentication doesn't: a stale or malformed access cookie makes
-    # CookieJWTAuthentication raise, which would 401 the request and leave both
-    # cookies sitting in the browser — failing at the one moment logout
-    # matters. It takes no input and only deletes the caller's own cookies, so
-    # there is nothing here for an unauthenticated caller to gain.
     authentication_classes = []
-    permission_classes = [AllowAny]
 
-    def post(self, request):
-        return clear_auth_cookies(Response(status=status.HTTP_204_NO_CONTENT))
+    def post(self, request, *args, **kwargs):
+        response = Response(status=status.HTTP_204_NO_CONTENT)
+        return clear_auth_cookies(response)
