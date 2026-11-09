@@ -76,7 +76,7 @@ const Navbar = () => {
               </div>
               <div className="flex flex-col">
                 <span className="font-extrabold text-2xl tracking-wider text-white font-display flex items-center gap-1.5">
-                  CINE<span className="bg-gradient-to-r from-rose-500 via-amber-400 to-amber-200 bg-clip-text text-transparent">PASS</span>
+                  CINE<span className="bg-gradient-to-r from-rose-500 via-amber-400 to-amber-200 bg-clip-text text-transparent">MORA</span>
                 </span>
                 <span className="text-[9px] tracking-widest uppercase text-slate-400 font-semibold -mt-1">
                   Cinematic Experience

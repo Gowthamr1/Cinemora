@@ -19,7 +19,7 @@ const SCENES = [
   { from: 0.38, to: 0.55, title: 'THE RED LOBBY', text: 'Velvet sofas, marble floors, the hum before the show.' },
   { from: 0.63, to: 0.8, title: 'INSIDE THE AUDITORIUM', text: 'Lights down. Find your seat.' },
   { from: 0.84, to: 0.93, title: 'CINEMA UNDER THE STARS', text: 'Every screen, every city.' },
-  { from: 0.95, to: 1.01, title: 'CINEPASS', text: 'One pass. Every movie.', cta: true },
+  { from: 0.95, to: 1.01, title: 'CINEMORA', text: 'One pass. Every movie.', cta: true },
 ];
 
 // Fade in over first 20% of a scene's range, out over the last 20%.

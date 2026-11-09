@@ -661,7 +661,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 🌟 5. WHY MOVIE LOVERS CHOOSE CINEPASS */}
+      {/* 🌟 5. WHY MOVIE LOVERS CHOOSE CINEMORA */}
       <section className="py-24 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -701,7 +701,7 @@ const Home = () => {
               {
                 icon: FiSmartphone,
                 title: 'Digital Passes & Offline QR',
-                content: 'Skip all box office ticket queues. Scan your encrypted CinePass QR directly from your phone at the theater gate.',
+                content: 'Skip all box office ticket queues. Scan your encrypted Cinemora QR directly from your phone at the theater gate.',
                 badge: 'Paperless',
                 gradient: 'from-purple-500 to-rose-500',
               },
