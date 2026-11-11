@@ -350,3 +350,4 @@ yarn-error.log*
 
 # Source code MUST remain tracked.
 .env.example
+powershell.bat

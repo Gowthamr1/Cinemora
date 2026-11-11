@@ -130,6 +130,16 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [isHoveringHero, featuredMovies.length]);
 
+  // Close trailer modal on Escape key press
+  useEffect(() => {
+    if (!trailerModalUrl) return undefined;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setTrailerModalUrl(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [trailerModalUrl]);
+
   // Handle Quick Search submit
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -823,34 +833,50 @@ const Home = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 lg:p-10"
             onClick={() => setTrailerModalUrl(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
               transition={{ duration: 0.2 }}
-              className="relative max-w-4xl w-full aspect-video rounded-3xl overflow-hidden border border-slate-700 bg-slate-950 shadow-2xl"
+              className="relative w-full max-w-5xl rounded-3xl overflow-hidden border border-slate-700/80 bg-slate-950 shadow-2xl shadow-rose-950/40 flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
-              <button
-                onClick={() => setTrailerModalUrl(null)}
-                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-slate-900/90 text-white hover:bg-rose-600 flex items-center justify-center transition-colors border border-slate-700"
-                aria-label="Close Trailer"
-              >
-                <FiX className="w-5 h-5" />
-              </button>
+              {/* Top Modal Header with Close Button */}
+              <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 bg-slate-900/90 border-b border-slate-800">
+                <div className="flex items-center space-x-2 text-rose-400 font-bold text-xs sm:text-sm">
+                  <FiPlay className="w-4 h-4 fill-rose-500" />
+                  <span className="text-white font-display text-sm sm:text-base">Official Movie Trailer</span>
+                </div>
+                <button
+                  onClick={() => setTrailerModalUrl(null)}
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors border border-slate-700 cursor-pointer"
+                  aria-label="Close Trailer"
+                >
+                  <FiX className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              </div>
 
-              {/* YouTube Iframe Embed */}
-              <iframe
-                src={toEmbedUrl(trailerModalUrl)}
-                title="Movie Trailer"
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+              {/* Responsive 16:9 Video Container */}
+              <div
+                className="w-full relative bg-black aspect-video overflow-hidden"
+                style={{
+                  width: '100%',
+                  aspectRatio: '16 / 9',
+                  minHeight: '260px',
+                }}
+              >
+                <iframe
+                  src={toEmbedUrl(trailerModalUrl)}
+                  title="Movie Trailer"
+                  className="w-full h-full border-0 absolute inset-0"
+                  style={{ width: '100%', height: '100%', border: 0 }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
             </motion.div>
           </motion.div>
         )}

@@ -336,13 +336,17 @@ const MovieDetail = () => {
         {activeTab === 'Trailers' && (
           <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800">
             {embed ? (
-              <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
+              <div
+                className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-800 relative bg-black"
+                style={{ width: '100%', aspectRatio: '16 / 9', minHeight: '320px' }}
+              >
                 <iframe
                   src={embed}
                   title={`${movie?.title} trailer`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
-                  className="w-full h-full"
+                  className="w-full h-full border-0 absolute inset-0"
+                  style={{ width: '100%', height: '100%', border: 0 }}
                 />
               </div>
             ) : (
