@@ -110,7 +110,7 @@ const Wallet = () => {
                 WALLET & GIFT CARDS
               </h1>
               <p className="text-slate-400 text-sm mt-1">
-                Seamless 1-click checkout for cinema tickets & instant refunds.
+                Stored balance for fast booking checkout and automatic cancellation refunds.
               </p>
             </div>
 

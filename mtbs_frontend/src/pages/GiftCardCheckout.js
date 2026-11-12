@@ -32,8 +32,8 @@ const GiftCardCheckout = () => {
     let interval;
     if (loading) {
       interval = setInterval(() => {
-        setProgress((prev) => Math.min(prev + 1, 100));
-      }, 100);
+        setProgress((prev) => Math.min(prev + 8, 100));
+      }, 80);
     }
     return () => clearInterval(interval);
   }, [loading]);
@@ -49,7 +49,7 @@ const GiftCardCheckout = () => {
     setProgress(0);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 8000));
+      await new Promise((resolve) => setTimeout(resolve, 1200));
       const res = await axios.post(`/wallet/gift-cards/${cardId}/pay/`, {
         method: method === 'upi' ? 'UPI' : 'CARD',
       });
@@ -94,10 +94,10 @@ const GiftCardCheckout = () => {
             <FiGift className="w-7 h-7 text-white" />
           </div>
           <h2 className="text-3xl font-black font-display text-white tracking-tight">
-            GIFT CARD CHECKOUT
+            Purchase Gift Card
           </h2>
           <p className="text-slate-400 text-xs mt-1">
-            Complete purchase to generate your redeemable voucher code
+            Complete payment to generate your gift voucher code
           </p>
         </div>
 

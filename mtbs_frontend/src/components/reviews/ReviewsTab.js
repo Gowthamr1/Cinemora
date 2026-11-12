@@ -216,7 +216,7 @@ const ReviewsTab = ({ movie, currentUser, onStatsChange }) => {
         <div className="glass-panel p-12 text-center rounded-3xl border border-slate-800 text-slate-400">
           <FiMessageSquare className="w-10 h-10 text-slate-600 mx-auto mb-2" />
           <p className="font-bold text-white text-base">No reviews yet.</p>
-          <p className="text-xs text-slate-500 mt-1">Be the first verified attendee to share your experience!</p>
+          <p className="text-xs text-slate-500 mt-1">Be the first to share your thoughts after watching this screening.</p>
         </div>
       )}
 

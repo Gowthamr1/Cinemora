@@ -45,7 +45,7 @@ const Analytics = () => {
       setError('');
     } catch (err) {
       setError(err.response?.status === 403
-        ? 'Admin access required to view business intelligence.'
+        ? 'Admin access required to view business analytics.'
         : 'Failed to load analytics records.');
     } finally {
       setLoading(false);
@@ -58,7 +58,7 @@ const Analytics = () => {
     return (
       <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center py-20">
         <div className="w-12 h-12 border-4 border-amber-500/30 border-t-amber-500 rounded-full animate-spin mb-4" />
-        <p className="text-slate-400 text-sm font-semibold">Generating analytics intelligence...</p>
+        <p className="text-slate-400 text-sm font-semibold">Loading business metrics and reports...</p>
       </div>
     );
   }
@@ -118,7 +118,7 @@ const Analytics = () => {
           <div>
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-xs font-bold border border-amber-500/20 uppercase tracking-widest mb-2">
               <FiPieChart className="w-3.5 h-3.5" />
-              <span>Executive Business Intelligence</span>
+              <span>Business Analytics</span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
               ANALYTICS DASHBOARD

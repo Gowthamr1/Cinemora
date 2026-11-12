@@ -82,13 +82,13 @@ const VerifyTicket = () => {
         <div className="glass-panel p-8 rounded-3xl border border-cyan-500/30 shadow-2xl relative overflow-hidden">
           <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-cyan-400 mb-2">
             <FiShield className="w-4 h-4" />
-            <span>Gate Staff Scanner</span>
+            <span>Auditorium Access Gate</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
             TICKET VERIFICATION
           </h1>
           <p className="text-slate-400 text-sm mt-1">
-            Scan attendee QR passes or manually input reference codes for entry.
+            Scan attendee digital QR codes or enter booking references to verify admission.
           </p>
         </div>
 
