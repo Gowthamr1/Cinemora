@@ -167,8 +167,8 @@ const Booking = () => {
           {/* Curved Theater Screen Header */}
           <div className="mb-12 text-center relative">
             <div className="theater-screen-curve mb-3" />
-            <span className="text-[11px] font-extrabold uppercase tracking-[0.3em] text-slate-400">
-              SCREEN THIS WAY
+            <span className="text-[11px] font-extrabold uppercase tracking-[0.25em] text-slate-400">
+              AUDITORIUM SCREEN
             </span>
           </div>
 
@@ -288,7 +288,13 @@ const Booking = () => {
                   : 'bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 text-white shadow-xl shadow-rose-600/30 hover:shadow-rose-600/50 hover:scale-105'
               }`}
             >
-              <span>{loading ? 'Securing Seats...' : 'Proceed to Checkout'}</span>
+              <span>
+                {loading
+                  ? 'Holding Seats...'
+                  : selectedSeats.length > 0
+                    ? `Reserve ${selectedSeats.length} Seat${selectedSeats.length > 1 ? 's' : ''} • $${totalPrice.toFixed(2)}`
+                    : 'Select Seats to Continue'}
+              </span>
               <FiArrowRight className="w-5 h-5" />
             </button>
           </div>

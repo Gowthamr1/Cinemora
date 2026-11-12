@@ -222,7 +222,7 @@ const Home = () => {
 
               {/* Title */}
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white mb-4 leading-[1.06] font-display">
-                {activeMovie?.title || 'EXPERIENCE THE MAGIC'}
+                {activeMovie?.title || 'NOW SHOWING'}
               </h1>
 
               {/* Metadata Pill Strip */}
@@ -252,7 +252,7 @@ const Home = () => {
               {/* Synopsis Description */}
               <p className="text-base sm:text-lg text-slate-300/90 mb-8 font-normal leading-relaxed line-clamp-3">
                 {activeMovie?.description ||
-                  'Reserve your front-row seats in real-time. Experience stunning 4K IMAX projection, crystal-clear Dolby Atmos acoustics, and zero waiting lines.'}
+                  'Select your seats on the live auditorium map and get instant gate QR passes on your phone. No box office lines, no printed tickets.'}
               </p>
 
               {/* Hero Action CTA Buttons */}
@@ -264,7 +264,7 @@ const Home = () => {
                     className="inline-flex items-center justify-center bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 text-white font-extrabold px-8 py-4 rounded-2xl text-base shadow-xl shadow-rose-600/30 hover:shadow-rose-600/50 transition-all duration-300 group border border-rose-400/20"
                   >
                     <FiFilm className="mr-2.5 w-5 h-5 transition-transform group-hover:rotate-12" />
-                    <span>Book Seats Now</span>
+                    <span>Choose Seats</span>
                     <FiArrowRight className="ml-2.5 w-5 h-5 transition-transform group-hover:translate-x-1" />
                   </motion.button>
                 </Link>
@@ -401,13 +401,13 @@ const Home = () => {
 
         </div>
 
-        {/* Live Cinema Trust Statistics Bar */}
+        {/* Live Cinema Service Highlights Bar */}
         <div className="mt-8 pt-6 border-t border-slate-800/60 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {[
-            { label: 'Active Moviegoers', val: '500K+', sub: 'Verified members' },
-            { label: 'Screenings Hosted', val: '120+', sub: 'Premier partner screens' },
-            { label: 'Seat Hold Speed', val: '< 50ms', sub: 'Instant WebSocket sync' },
-            { label: 'Customer Rating', val: '4.9 / 5', sub: 'From 80,000+ reviews' },
+            { label: 'Live Seat Hold', val: 'Real-Time', sub: 'Instant socket sync avoids double bookings' },
+            { label: 'Paperless Pass', val: 'Mobile QR', sub: 'Scan directly at auditorium doors' },
+            { label: 'Format Specs', val: 'IMAX & Atmos', sub: 'Verified sound and projection tags' },
+            { label: 'Free Cancellation', val: 'Up to 2h', sub: 'Instant refund preview before showtime' },
           ].map((stat, i) => (
             <div key={i} className="text-center sm:text-left sm:border-r last:border-r-0 border-slate-800/80 pr-4">
               <p className="text-2xl sm:text-3xl font-black text-white font-display">{stat.val}</p>
@@ -424,10 +424,10 @@ const Home = () => {
           <div>
             <div className="inline-flex items-center space-x-2 text-rose-400 text-xs font-extrabold uppercase tracking-widest mb-1.5">
               <FiTv className="w-3.5 h-3.5" />
-              <span>In Theaters Now</span>
+              <span>In Theaters This Week</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight font-display">
-              TRENDING BLOCKBUSTERS
+              NOW SHOWING
             </h2>
           </div>
 
@@ -552,20 +552,20 @@ const Home = () => {
         )}
       </section>
 
-      {/* 🎟️ 4. INTERACTIVE LIVE SEAT MATRIX PREVIEW ("FEEL THE SPEED") */}
+      {/* 🎟️ 4. INTERACTIVE LIVE SEAT MATRIX PREVIEW */}
       <section className="py-20 relative z-10 bg-slate-900/40 border-y border-slate-800/80 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-12">
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-4">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping mr-1" />
-              <span>Interactive Cinema Tech Preview</span>
+              <span>Interactive Seat Map Preview</span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 font-display">
-              LIVE SEAT SELECTION PREVIEW
+              TEST THE SEAT SELECTOR
             </h2>
             <p className="text-slate-400 text-base sm:text-lg">
-              Click on seats below to test our real-time seat locking engine. Zero waiting queues, zero double bookings.
+              Click seats below to see real-time price calculations. In real bookings, seats hold immediately while you complete checkout.
             </p>
           </div>
 
@@ -671,16 +671,16 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 🌟 5. WHY MOVIE LOVERS CHOOSE CINEMORA */}
+      {/* 🌟 5. THEATER ESSENTIALS */}
       <section className="py-24 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 font-display">
-              ENGINEERED FOR CINEMA PURISTS
+              THEATER ESSENTIALS
             </h2>
             <p className="text-slate-400 text-lg">
-              Next-generation theater technology built to guarantee the ultimate movie night.
+              Everything you need for a smooth movie night, from seat selection to the opening credits.
             </p>
           </div>
 
@@ -696,22 +696,22 @@ const Home = () => {
             {[
               {
                 icon: FiZap,
-                title: 'Real-Time Seat Locking',
-                content: 'Instant WebSocket synchronization guarantees that the moment you click a seat, it is reserved for you across all devices.',
+                title: 'Live Seat Hold',
+                content: 'The moment you click a seat, it holds exclusively for you. No race conditions, cart expirations, or duplicate sales.',
                 badge: 'Live WebSocket',
                 gradient: 'from-rose-500 to-amber-500',
               },
               {
                 icon: FiVolume2,
-                title: 'IMAX & Dolby Atmos 7.1',
-                content: 'Find verified screenings with laser projection, acoustic calibration, and high-frame-rate 3D audio.',
-                badge: 'Premium Sound',
-                gradient: 'from-amber-400 to-emerald-400',
+                title: 'Clear Screen Formats',
+                content: 'Auditorium tags show whether your show is in IMAX 70mm, 4K Laser, or Dolby Atmos 7.1 surround before you book.',
+                badge: 'Audio & Visual',
+                gradient: 'from-amber-400 to-rose-500',
               },
               {
                 icon: FiSmartphone,
-                title: 'Digital Passes & Offline QR',
-                content: 'Skip all box office ticket queues. Scan your encrypted Cinemora QR directly from your phone at the theater gate.',
+                title: 'Direct Gate Entry',
+                content: 'Your digital ticket QR code generates instantly. Show it directly to the usher at the auditorium doors and walk in.',
                 badge: 'Paperless',
                 gradient: 'from-purple-500 to-rose-500',
               },
@@ -737,7 +737,7 @@ const Home = () => {
 
                 <div className="flex items-center space-x-2 text-xs font-bold text-rose-400 group-hover:text-rose-300 transition-colors">
                   <FiCheckCircle className="w-4 h-4" />
-                  <span>Verified Feature</span>
+                  <span>Standard with every ticket</span>
                 </div>
               </motion.div>
             ))}
@@ -751,25 +751,25 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-12 font-display uppercase">
-            Book In Three Simple Steps
+            How Booking Works
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 step: '01',
-                title: 'Choose Movie & Showtime',
-                desc: 'Explore now-showing titles, filter by language, IMAX format, and select your preferred theatre venue.',
+                title: 'Select Movie & Showtime',
+                desc: 'Check start times, languages, screen formats (IMAX, 4K Laser), and select your local cinema.',
               },
               {
                 step: '02',
                 title: 'Pick Exact Seats',
-                desc: 'View the live seat map and lock your favorite recliner or club seats with instant socket feedback.',
+                desc: 'Select recliners or club seats on the live auditorium map with transparent pricing and real-time holds.',
               },
               {
                 step: '03',
-                title: 'Scan QR at the Gate',
-                desc: 'Receive your instant digital pass. Present your mobile QR directly at the hall entrance and enjoy the movie.',
+                title: 'Show QR Code at Gate',
+                desc: 'Open your digital pass on your phone, scan it at the auditorium entrance, and head straight in.',
               },
             ].map((step, idx) => (
               <div key={idx} className="glass-panel p-8 rounded-3xl border border-slate-800 relative text-left">
@@ -785,38 +785,40 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 📢 7. VIP CALL TO ACTION BANNER */}
+      {/* 📢 7. CALL TO ACTION BANNER */}
       <section className="py-20 relative z-10 overflow-hidden">
         <div className="max-w-5xl mx-auto px-4 text-center relative z-10">
           <div className="glass-panel p-12 sm:p-16 rounded-3xl border border-rose-500/20 shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-rose-600/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
-            <FiStar className="w-12 h-12 text-amber-400 mx-auto mb-6 animate-bounce" />
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-amber-500 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-rose-500/20">
+              <FiFilm className="w-6 h-6 text-white" />
+            </div>
             
-            <h2 className="text-4xl sm:text-6xl font-black text-white mb-6 tracking-tight font-display">
-              READY FOR YOUR NEXT SHOW?
+            <h2 className="text-3xl sm:text-5xl font-black text-white mb-4 tracking-tight font-display">
+              PLAN YOUR NEXT MOVIE NIGHT
             </h2>
-            <p className="text-slate-300 text-lg sm:text-xl max-w-2xl mx-auto mb-8">
-              Explore upcoming blockbusters and lock your seats in under 60 seconds.
+            <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-8">
+              Check today's showtimes, view auditorium seating maps, and reserve prime seats in advance.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/movies">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 text-white font-extrabold px-10 py-4.5 rounded-2xl text-lg shadow-xl shadow-rose-600/30 hover:shadow-rose-600/50 transition-all inline-flex items-center space-x-3"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 text-white font-extrabold px-9 py-4 rounded-2xl text-base shadow-xl shadow-rose-600/30 hover:shadow-rose-600/50 transition-all inline-flex items-center space-x-2.5"
                 >
-                  <span>Book Tickets Now</span>
+                  <span>Browse Showtimes</span>
                   <FiArrowRight className="w-5 h-5" />
                 </motion.button>
               </Link>
               <Link to="/register">
                 <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="glass-panel hover:bg-slate-800 text-slate-200 font-bold px-8 py-4.5 rounded-2xl text-lg border border-slate-700 transition-all"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="glass-panel hover:bg-slate-800 text-slate-200 font-bold px-8 py-4 rounded-2xl text-base border border-slate-700 transition-all"
                 >
                   <span>Create Account</span>
                 </motion.button>

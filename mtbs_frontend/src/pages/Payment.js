@@ -29,8 +29,8 @@ const Payment = () => {
     let interval;
     if (loading) {
       interval = setInterval(() => {
-        setProgress(prev => Math.min(prev + 1, 100));
-      }, 100);
+        setProgress(prev => Math.min(prev + 8, 100));
+      }, 80);
     }
     return () => clearInterval(interval);
   }, [loading]);
@@ -58,7 +58,7 @@ const Payment = () => {
         });
         await refreshWallet();
       } else {
-        await new Promise(resolve => setTimeout(resolve, 8000));
+        await new Promise(resolve => setTimeout(resolve, 1200));
         await axios.post('/payments/mock/', {
           booking_id: parseInt(bookingId),
           method: method,
@@ -68,7 +68,7 @@ const Payment = () => {
       setStatus('success');
       setTimeout(() => {
         navigate('/dashboard', { state: { paid: true } });
-      }, 2000);
+      }, 1500);
     } catch (err) {
       const detail = err.response?.data?.error;
       setStatus(detail ? { kind: 'failed', detail } : 'failed');
@@ -100,10 +100,10 @@ const Payment = () => {
             <FiLock className="w-7 h-7 text-white" />
           </div>
           <h2 className="text-3xl font-black font-display text-white tracking-tight">
-            SECURE CHECKOUT
+            Confirm & Pay
           </h2>
           <p className="text-slate-400 text-xs mt-1">
-            Encrypted 256-bit payment gateway
+            Choose your payment method to complete booking
           </p>
         </div>
 
@@ -140,18 +140,18 @@ const Payment = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-xs font-bold uppercase text-slate-400">Select Payment Gateway</label>
+              <label className="block text-xs font-bold uppercase text-slate-400">Payment Method</label>
               <select
                 value={method}
                 onChange={(e) => setMethod(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 text-white p-4 rounded-2xl text-sm font-semibold outline-none transition-all"
+                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 text-white p-4 rounded-2xl text-sm font-semibold outline-none transition-all"
               >
-                <option value="">Choose payment method</option>
+                <option value="">Select payment method</option>
                 <option value="card">💳 Credit / Debit Card</option>
                 <option value="upi">📱 UPI Instant Pay</option>
                 {walletEnabled && (
                   <option value="wallet" disabled={walletShort}>
-                    👛 Wallet ({money(balanceNumber)}){walletShort ? ' — insufficient funds' : ''}
+                    👛 Cinemora Wallet ({money(balanceNumber)}){walletShort ? ' — insufficient balance' : ''}
                   </option>
                 )}
               </select>
@@ -173,11 +173,15 @@ const Payment = () => {
                     style={{ width: `${progress}%` }}
                   />
                   <span className="relative z-10 font-bold">
-                    {method === 'wallet' ? 'Verifying Wallet...' : `Processing (${progress}%)`}
+                    {method === 'wallet' ? 'Authorizing Wallet...' : `Confirming (${progress}%)`}
                   </span>
                 </>
               ) : (
-                <span>{method === 'wallet' ? 'Pay via Wallet' : 'Confirm & Complete Payment'}</span>
+                <span>
+                  {method === 'wallet'
+                    ? `Pay ${amount != null ? money(amount) : ''} from Wallet`
+                    : (amount != null ? `Pay ${money(amount)}` : 'Confirm Payment')}
+                </span>
               )}
             </button>
 

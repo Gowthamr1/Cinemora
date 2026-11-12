@@ -49,7 +49,7 @@ const Login = () => {
             Welcome Back
           </h2>
           <p className="text-slate-400 text-sm mt-1">
-            Sign in to access your bookings & tickets
+            Sign in to access your bookings, tickets, and watchlist
           </p>
         </div>
 
@@ -68,10 +68,11 @@ const Login = () => {
               <input
                 type="text"
                 required
+                autoComplete="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Enter your username"
-                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 text-white pl-12 pr-4 py-3.5 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
+                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 text-white pl-12 pr-4 py-3.5 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
               />
             </div>
           </div>
@@ -83,10 +84,11 @@ const Login = () => {
               <input
                 type="password"
                 required
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 text-white pl-12 pr-4 py-3.5 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
+                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 text-white pl-12 pr-4 py-3.5 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
               />
             </div>
           </div>
@@ -96,7 +98,7 @@ const Login = () => {
             disabled={busy}
             className="w-full py-4 rounded-2xl font-extrabold text-sm text-white bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 hover:from-rose-500 hover:to-amber-400 shadow-xl shadow-rose-600/30 transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
           >
-            <span>{busy ? 'Authenticating...' : 'Sign In'}</span>
+            <span>{busy ? 'Signing in...' : 'Sign In'}</span>
             <FiArrowRight className="w-4 h-4" />
           </button>
         </form>

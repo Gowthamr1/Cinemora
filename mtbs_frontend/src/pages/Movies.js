@@ -81,10 +81,10 @@ const Movies = () => {
       {/* Header Banner */}
       <div className="max-w-7xl mx-auto mb-10 text-center">
         <h1 className="text-4xl sm:text-6xl font-black font-display text-white tracking-tight mb-3">
-          EXPLORE <span className="bg-gradient-to-r from-rose-500 to-amber-400 bg-clip-text text-transparent">PREMIERES</span>
+          EXPLORE <span className="bg-gradient-to-r from-rose-500 to-amber-400 bg-clip-text text-transparent">SCREENINGS</span>
         </h1>
         <p className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto">
-          Discover critically acclaimed films, blockbuster hits, and reserve real-time seats across premium theaters.
+          Find movies playing in theaters now, filter by format or language, and reserve your seats in advance.
         </p>
       </div>
 
@@ -337,7 +337,7 @@ const Movies = () => {
                   to={`/movies/${movie.slug || movie.id}`}
                   className="w-full inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-rose-600 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white font-bold py-3.5 px-4 rounded-2xl shadow-lg shadow-rose-600/20 group-hover:shadow-rose-600/40 transition-all text-sm"
                 >
-                  <span>Book Showtimes</span>
+                  <span>View Showtimes & Seats</span>
                   <FiChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>

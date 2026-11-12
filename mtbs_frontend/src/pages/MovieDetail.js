@@ -246,8 +246,15 @@ const MovieDetail = () => {
               </h3>
 
               {showtimes.length === 0 ? (
-                <div className="text-center py-10 text-slate-400">
-                  <p className="text-sm font-semibold">No showtimes currently scheduled for this movie.</p>
+                <div className="text-center py-10 text-slate-400 space-y-3">
+                  <p className="text-sm font-semibold">No upcoming showtimes currently scheduled for this title.</p>
+                  <Link
+                    to="/movies"
+                    className="inline-flex items-center space-x-1.5 text-xs font-bold text-rose-400 hover:text-rose-300"
+                  >
+                    <span>Browse other films currently showing</span>
+                    <FiChevronRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-4">

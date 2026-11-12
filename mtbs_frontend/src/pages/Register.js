@@ -55,7 +55,7 @@ const Register = () => {
             Create Account
           </h2>
           <p className="text-slate-400 text-sm mt-1">
-            Join thousands of movie fans today
+            Book tickets faster, track showtimes, and save movies to your watchlist
           </p>
         </div>
 
@@ -74,10 +74,11 @@ const Register = () => {
               <input
                 type="text"
                 required
+                autoComplete="username"
                 value={form.username}
                 onChange={(e) => setForm({ ...form, username: e.target.value })}
                 placeholder="Choose a username"
-                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 text-white pl-12 pr-4 py-3 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
+                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 text-white pl-12 pr-4 py-3 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
               />
             </div>
           </div>
@@ -89,10 +90,11 @@ const Register = () => {
               <input
                 type="email"
                 required
+                autoComplete="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 placeholder="you@example.com"
-                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 text-white pl-12 pr-4 py-3 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
+                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 text-white pl-12 pr-4 py-3 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
               />
             </div>
           </div>
@@ -104,10 +106,11 @@ const Register = () => {
               <input
                 type="password"
                 required
+                autoComplete="new-password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="••••••••"
-                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 text-white pl-12 pr-4 py-3 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
+                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 text-white pl-12 pr-4 py-3 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
               />
             </div>
           </div>
@@ -119,10 +122,11 @@ const Register = () => {
               <input
                 type="password"
                 required
+                autoComplete="new-password"
                 value={form.password2}
                 onChange={(e) => setForm({ ...form, password2: e.target.value })}
                 placeholder="••••••••"
-                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 text-white pl-12 pr-4 py-3 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
+                className="w-full bg-slate-900 border border-slate-800 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 text-white pl-12 pr-4 py-3 rounded-2xl text-sm outline-none transition-all placeholder-slate-600"
               />
             </div>
           </div>

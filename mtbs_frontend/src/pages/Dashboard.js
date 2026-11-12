@@ -188,7 +188,7 @@ const Dashboard = () => {
             <div className="absolute top-0 right-0 w-64 h-64 bg-rose-600/10 rounded-full blur-3xl pointer-events-none" />
             <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-rose-400 mb-3">
               <FiCalendar className="w-4 h-4 text-amber-400 animate-pulse" />
-              <span>Next Upcoming Premiere</span>
+              <span>Your Next Showtime</span>
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">

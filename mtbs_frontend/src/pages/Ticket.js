@@ -154,6 +154,19 @@ const Ticket = () => {
                 <p className="mt-4 font-mono text-xs font-bold text-slate-400">
                   REF: {booking.reference}
                 </p>
+
+                <p className="mt-3 text-xs text-slate-400 max-w-xs leading-relaxed">
+                  Show this QR code at the auditorium entrance. The gate scanner verifies your seats immediately.
+                </p>
+
+                <div className="mt-6 flex gap-3">
+                  <button
+                    onClick={() => window.print()}
+                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700"
+                  >
+                    Print or Save PDF
+                  </button>
+                </div>
               </>
             ) : (
               <div className="py-4 text-center space-y-2">
